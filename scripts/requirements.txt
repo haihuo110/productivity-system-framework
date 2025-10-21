@@ -1,0 +1,34 @@
+# Python dependencies for automation scripts
+# Install with: pip install -r requirements.txt
+
+# Notion API client
+notion-client==2.2.1
+
+# HTTP requests for webhooks and APIs
+requests==2.31.0
+
+# For scheduling (optional)
+schedule==1.2.0
+
+# For date/time handling
+python-dateutil==2.8.2
+
+# For environment variable management
+python-dotenv==1.0.0
+
+# For email (usually included in Python, but listed for completeness)
+# smtplib - standard library
+# email - standard library
+
+# Optional: For more advanced Notion operations
+# notion-database==0.0.4
+
+# Optional: For CSV/Excel export
+# pandas==2.1.3
+# openpyxl==3.1.2
+
+# Optional: For JSON pretty printing and manipulation
+# json - standard library
+
+# Optional: For Markdown processing
+# markdown==3.5.1

@@ -1,0 +1,85 @@
+{
+  "job_id": "JOB-ROBOT-001",
+  "job_title": "工业机器人系统操作与数字孪生运维员",
+  "regulatory_framework": {
+    "mohrss_standard_code": "6-31-01-09",
+    "moe_major_code": "460305",
+    "major_name": "工业机器人技术",
+    "safety_standards": [
+      "GB 11291.1-2011 工业环境中的机器人 安全要求",
+      "GB/T 15706-2012 机械安全 设计通则 风险评估与风险减小",
+      "ISO 13849-1:2015 机械安全 控制系统安全相关部件 (PL e / Cat 4)",
+      "GB 50058-2014 爆炸危险环境电力装置设计规范"
+    ],
+    "labor_compliance": {
+      "intern_stipend_minimum_ratio": 0.80,
+      "max_consecutive_hours": 8,
+      "night_shift_prohibited": true,
+      "mandatory_loto_rule": "强制执行 OSHA 1910.147 上锁挂牌（LOTO）程序"
+    }
+  },
+  "hardware_specifications": {
+    "robot_entity": {
+      "type": "6轴垂直多关节工业机器人",
+      "payload_kg": 5.0,
+      "reach_mm": 910,
+      "repeatability_mm": 0.02,
+      "mounting": "地面固定安装，膨胀螺栓 M12x100"
+    },
+    "electrical_ratings": {
+      "input_voltage": "单相交流 220V ±10% 50Hz",
+      "total_power_kw": 3.2,
+      "leakage_protection_current_ma": 30,
+      "trip_response_time_s": 0.1,
+      "grounding_resistance_ohm": 4.0,
+      "control_voltage": "直流 24V DC (SELV 安全特低电压)"
+    },
+    "pneumatic_ratings": {
+      "supply_pressure_mpa": 0.6,
+      "operational_range_mpa": "0.45 - 0.70",
+      "filtration_rating_um": 5
+    }
+  },
+  "safety_and_ppe": {
+    "ppe_mandatory_list": [
+      "GB 2811-2019 头部防撞安全帽",
+      "GB 21148-2020 防砸防静电安全鞋（耐压15kN）",
+      "GB 14866-2006 防冲击护目镜",
+      "GB 24541-2009 机械防割耐磨手套（等级 2 级以上）"
+    ],
+    "interlock_systems": {
+      "e_stop_category": "Cat 4 双回路硬件急停，带自锁与旋转复位",
+      "safety_fence_distance_mm": 1200,
+      "optical_grating": "4 级安全光幕（响应时间 <= 20ms）",
+      "door_interlock_type": "电磁互锁开关，运行状态强制锁死"
+    }
+  },
+  "simulation_and_vc_mapping": {
+    "digital_twin_software": "Visual Components (VC) 4.0+",
+    "virtual_teach_pendant": {
+      "emulated_controller": "大辰低成本教学虚拟示教器 V2.0",
+      "coordinate_systems": ["JOINT", "WORLD", "TOOL", "USER"],
+      "speed_override_limits": {
+        "manual_teach_max_percent": 10,
+        "auto_test_max_percent": 30,
+        "production_max_percent": 100
+      }
+    },
+    "plc_io_signal_map": [
+      {"address": "DI0.0", "signal": "E_STOP_NORMAL", "description": "外部急停双回路状态正常"},
+      {"address": "DI0.1", "signal": "SAFETY_FENCE_CLOSED", "description": "安全门全闭合互锁信号"},
+      {"address": "DI0.2", "signal": "AIR_PRESSURE_READY", "description": "气压检测达标 (>=0.5MPa)"},
+      {"address": "DO0.0", "signal": "ROBOT_SERVO_ENABLE", "description": "机器人伺服使能输出"},
+      {"address": "DO0.1", "signal": "VALVE_GRIPPER_CLAMP", "description": "气动夹爪闭合动作"},
+      {"address": "DO0.2", "signal": "ALARM_TOWER_RED", "description": "声光报警器红色常亮"}
+    ],
+    "offline_sandbox_mode": true
+  },
+  "pedagogical_modules": [
+    {"module_id": "MOD-ROBOT-SAFE", "name": "工作站电气安全与 LOTO 断电上锁规范", "hours": 4},
+    {"module_id": "MOD-ROBOT-TEACH", "name": "六轴机器人坐标系标定与点位示教编程", "hours": 8},
+    {"module_id": "MOD-ROBOT-DT", "name": "基于 VC 的虚实映射数字孪生协同仿真", "hours": 8},
+    {"module_id": "MOD-ROBOT-COMM", "name": "PLC 与工业机器人 I/O 交互与信号联锁调测", "hours": 6},
+    {"module_id": "MOD-ROBOT-MAINT", "name": "典型故障诊断排查与预防性周期保养", "hours": 4}
+  ]
+}

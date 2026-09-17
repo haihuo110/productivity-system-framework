@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dachen.example/schemas/lab-work-order-v1.json",
+  "title": "Dachen TVET Lab Work Order v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract_version", "verification_status", "open_issues", "work_order", "tracking_chain"],
+  "properties": {
+    "schema_version": {"const": "lab-work-order-v1"},
+    "contract_version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+    "verification_status": {"enum": ["draft", "draft-validated", "in-review", "verified", "deprecated"]},
+    "open_issues": {"type": "array", "items": {"type": "string"}},
+    "work_order": {"$ref": "#/$defs/workOrder"},
+    "tracking_chain": {"type": "array", "items": {"type": "string", "pattern": "^JOB-[A-Z0-9-]+ -> COMP-[A-Z0-9-]+ -> MOD-[A-Z0-9-]+ -> SCN-[A-Z0-9-]+ -> WO-[A-Z0-9-]+$"}}
+  },
+  "$defs": {
+    "workOrder": {"type": "object", "additionalProperties": false, "required": ["id", "scenario_id", "module_id", "title", "objective", "duration_minutes", "prerequisites", "resources", "steps", "acceptance_criteria", "safety_controls", "deliverables", "rubric"], "properties": {"id": {"type": "string", "pattern": "^WO-[A-Z0-9-]+$"}, "scenario_id": {"type": "string", "pattern": "^SCN-[A-Z0-9-]+$"}, "module_id": {"type": "string", "pattern": "^MOD-[A-Z0-9-]+$"}, "title": {"type": "string"}, "objective": {"type": "string", "minLength": 1}, "competency_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^COMP-[A-Z0-9-]+$"}}, "duration_minutes": {"type": "integer", "exclusiveMinimum": 0}, "prerequisites": {"type": "array", "items": {"type": "string"}}, "resources": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["name", "quantity", "unit"], "properties": {"name": {"type": "string"}, "quantity": {"type": "number", "exclusiveMinimum": 0}, "unit": {"type": "string"}, "version": {"type": "string"}}}}, "steps": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["sequence", "instruction", "expected_output", "checkpoint"], "properties": {"sequence": {"type": "integer", "minimum": 1}, "instruction": {"type": "string"}, "expected_output": {"type": "string"}, "checkpoint": {"type": "string"}, "risk_control": {"type": "string"}}}}, "acceptance_criteria": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["criterion", "threshold", "measurement", "evidence"], "properties": {"criterion": {"type": "string"}, "threshold": {"type": "string"}, "measurement": {"type": "string"}, "evidence": {"type": "string"}}}}, "safety_controls": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["hazard", "control", "stop_condition", "emergency_action"], "properties": {"hazard": {"type": "string"}, "control": {"type": "string"}, "stop_condition": {"type": "string"}, "emergency_action": {"type": "string"}}}}, "deliverables": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "rubric": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["criterion", "weight", "anchors"], "properties": {"criterion": {"type": "string"}, "weight": {"type": "number", "exclusiveMinimum": 0, "maximum": 100}, "anchors": {"type": "array", "minItems": 2, "items": {"type": "string"}}}}}}}
+  }
+}

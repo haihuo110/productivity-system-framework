@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dachen.example/schemas/curriculum-blueprint-v1.json",
+  "title": "Dachen TVET Curriculum Blueprint v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract_version", "verification_status", "open_issues", "course", "modules", "tracking_chain"],
+  "properties": {
+    "schema_version": {"const": "curriculum-blueprint-v1"},
+    "contract_version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+    "verification_status": {"enum": ["draft", "draft-validated", "in-review", "verified", "deprecated"]},
+    "open_issues": {"type": "array", "items": {"type": "string"}},
+    "course": {"type": "object", "additionalProperties": false, "required": ["id", "title", "job_ids", "total_hours", "delivery_mode", "learning_outcomes"], "properties": {"id": {"type": "string", "pattern": "^CUR-[A-Z0-9-]+$"}, "title": {"type": "string"}, "job_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^JOB-[A-Z0-9-]+$"}}, "total_hours": {"type": "number", "exclusiveMinimum": 0}, "delivery_mode": {"enum": ["lab", "blended", "classroom", "workplace"]}, "learning_outcomes": {"type": "array", "minItems": 1, "items": {"type": "string"}}}},
+    "modules": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/module"}},
+    "tracking_chain": {"type": "array", "items": {"type": "string", "pattern": "^JOB-[A-Z0-9-]+ -> COMP-[A-Z0-9-]+ -> MOD-[A-Z0-9-]+ -> SCN-[A-Z0-9-]+ -> WO-[A-Z0-9-]+$"}}
+  },
+  "$defs": {
+    "module": {"type": "object", "additionalProperties": false, "required": ["id", "title", "competency_ids", "hours", "learning_outcomes", "scenario_ids", "assessment"], "properties": {"id": {"type": "string", "pattern": "^MOD-[A-Z0-9-]+$"}, "title": {"type": "string"}, "competency_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^COMP-[A-Z0-9-]+$"}}, "prerequisite_module_ids": {"type": "array", "items": {"type": "string", "pattern": "^MOD-[A-Z0-9-]+$"}}, "hours": {"type": "number", "exclusiveMinimum": 0}, "learning_outcomes": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "scenario_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^SCN-[A-Z0-9-]+$"}}, "assessment": {"type": "object", "additionalProperties": false, "required": ["method", "pass_threshold", "evidence"], "properties": {"method": {"type": "string"}, "pass_threshold": {"type": "number", "minimum": 0, "maximum": 100}, "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}}}}}}
+  }
+}

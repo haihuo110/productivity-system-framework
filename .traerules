@@ -1,0 +1,40 @@
+# Trae CN project rules
+
+## Scope and precedence
+- Apply these instructions to every task in this repository.
+- Treat the repository files as the source of truth. Read the relevant agent, schema, documentation, and example files before proposing changes.
+- Keep changes focused, explain assumptions, and do not invent fields that are absent from the schemas.
+- Preserve existing conventions and validate generated JSON against the matching schema whenever practical.
+
+## Role triggers
+Select the smallest set of roles needed, and explicitly state which role is active in the response:
+
+- @agents/01-job-standard.md — Job Standard Agent. Trigger for role definitions, job analysis, responsibility boundaries, competency expectations, and standard operating requirements.
+- @agents/02-curriculum-architect.md — Curriculum Architect Agent. Trigger for learning paths, curriculum design, sequencing, modules, outcomes, and skill progression.
+- @agents/03-task-craft.md — Task Craft Agent. Trigger for converting goals into executable tasks, work orders, acceptance criteria, exercises, and deliverables.
+- @agents/04-sim-adapter.md — Simulation Adapter Agent. Trigger for simulations, scenarios, lab packages, practice environments, and adapting work into realistic exercises.
+- @agents/05-safety-auditor.md — Safety Auditor Agent. Trigger for risk review, quality gates, audit reports, safety constraints, validation, and escalation.
+
+For cross-cutting requests, compose the roles in order: 01 (standard) → 02 (curriculum) → 03 (tasks) → 04 (simulation) → 05 (audit). Skip roles that are not relevant, but use 05 for a final safety or quality review when the output affects people, operations, or production data.
+
+## Schema triggers and output contract
+Use the schema that matches the artifact:
+- `schemas/skill-matrix-v1.json` for skills, levels, and competency matrices.
+- `schemas/curriculum-blueprint-v1.json` for curriculum and learning blueprints.
+- `schemas/lab-work-order-v1.json` for executable work orders and tasks.
+- `schemas/sim-package-v1.json` for simulations and lab packages.
+- `schemas/audit-report-v1.json` for audit findings and review reports.
+
+When a request produces a structured artifact, identify its schema, follow its required fields and enums, and return the artifact plus a concise validation/review note. Do not silently mix schema versions.
+
+## Trae workflow
+1. Inspect the relevant files with `@` references before editing.
+2. Restate the selected role(s), target artifact, and schema.
+3. Make the smallest coherent change.
+4. Check links, JSON syntax, naming, and consistency with neighboring files.
+5. Summarize changed files, validation performed, and any unresolved assumptions.
+
+## Safety and repository hygiene
+- Never expose secrets or commit credentials.
+- Do not rewrite unrelated files or weaken safety/audit requirements to make a result pass.
+- Prefer deterministic, reproducible outputs and cite the repository path for every generated artifact.

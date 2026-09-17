@@ -1,0 +1,24 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://dachen.example/schemas/audit-report-v1.json",
+  "title":"Dachen TVET Audit Report v1",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","contract_version","verification_status","open_issues","audit","tracking_chain"],
+  "properties":{
+    "schema_version":{"const":"audit-report-v1"},
+    "contract_version":{"type":"string","pattern":"^\\d+\\.\\d+\\.\\d+$"},
+    "verification_status":{"enum":["draft","draft-validated","in-review","verified","rejected","deprecated"]},
+    "open_issues":{"type":"array","items":{"type":"string"}},
+    "audit":{"$ref":"#/$defs/audit"},
+    "tracking_chain":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^JOB-[A-Z0-9-]+ -> COMP-[A-Z0-9-]+ -> MOD-[A-Z0-9-]+ -> SCN-[A-Z0-9-]+ -> WO-[A-Z0-9-]+ -> SIM-[A-Z0-9-]+ -> AUDIT-[A-Z0-9-]+$"}}
+  },
+  "$defs":{
+    "audit":{"type":"object","additionalProperties":false,"required":["id","work_order_ids","simulation_ids","scope","status","findings","regulatory_checks","remediation","review"],"properties":{
+      "id":{"type":"string","pattern":"^AUDIT-[A-Z0-9-]+$"},"work_order_ids":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^WO-[A-Z0-9-]+$"}},"simulation_ids":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^SIM-[A-Z0-9-]+$"}},"scope":{"type":"string"},"status":{"enum":["APPROVED","CONDITIONAL","REJECTED"]},
+      "findings":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["id","category","severity","hazard","evidence","control","disposition"],"properties":{"id":{"type":"string","pattern":"^FIND-[A-Z0-9-]+$"},"category":{"enum":["ppe","electrical","mechanical","robotics","fire","training","regulatory","simulation"]},"severity":{"enum":["low","medium","high","critical"]},"hazard":{"type":"string"},"evidence":{"type":"array","minItems":1,"items":{"type":"string"}},"control":{"type":"string"},"disposition":{"enum":["open","accepted","remediated","blocked"]}}}},
+      "regulatory_checks":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["reference","version","requirement","evidence","result"],"properties":{"reference":{"type":"string"},"version":{"type":"string"},"requirement":{"type":"string"},"evidence":{"type":"string"},"result":{"enum":["pass","fail","unknown"]}}}},
+      "remediation":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["finding_id","immediate_containment","corrective_action","owner","due_date","verification_evidence"],"properties":{"finding_id":{"type":"string","pattern":"^FIND-[A-Z0-9-]+$"},"immediate_containment":{"type":"string"},"corrective_action":{"type":"string"},"owner":{"type":"string"},"due_date":{"type":"string","format":"date"},"verification_evidence":{"type":"string"}}}},
+      "review":{"type":"object","additionalProperties":false,"required":["auditor","reviewed_at","evidence_complete","veto_applied"],"properties":{"auditor":{"type":"string"},"reviewed_at":{"type":"string","format":"date-time"},"evidence_complete":{"type":"boolean"},"veto_applied":{"type":"boolean"},"supersedes":{"type":"string","pattern":"^AUDIT-[A-Z0-9-]+$"}}}
+    }}
+  }
+}
